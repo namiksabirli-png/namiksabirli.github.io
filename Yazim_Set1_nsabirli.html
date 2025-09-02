@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>YAZIM – SET 1 (Yanlış/Doğru Karışık) - nsabirli</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+  body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; color: #333; }
+  h1 { text-align: center; margin-bottom: 30px; font-size: 2.2em; color: #222; }
+  .italic-nsabirli { font-family: 'Nanum Pen Script', cursive; font-style: italic; }
+  .question { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; padding: 18px; }
+  .question h3 { margin-top: 0; font-weight: 700; color: #333; }
+  .option { background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px; padding: 10px 14px; margin: 8px 0; cursor: pointer; user-select: none; transition: background-color 0.15s ease; }
+  .option:hover { background-color: #efefef; }
+  .feedback { margin-top: 10px; font-weight: 600; font-size: 1rem; }
+  .correct-feedback { color: #2e7d32; }
+  .incorrect-feedback { color: #c62828; }
+  .correct-word { color: #2e7d32; font-weight: 700; }
+  .incorrect-word { color: #c62828; font-weight: 700; }
+  .explanation { font-weight: 500; color: #222; display: block; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>YAZIM – SET 1 (Yanlış/Doğru Karışık) – <span class="italic-nsabirli">nsabirli</span></h1>
+
+<div id="quiz-container"></div>
+
+<script>
+  const questions = [
+    { number: 1, text: "1. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Dün pazarda <b>acaip</b> kalabalık vardı, yürümek bile zordu.', correct: false, wrongWord: 'acaip', correctWord: 'acayip' },
+      { text: 'b) Bel ağrısı için <b>akupunktur</b> tedavisine başlamış, şimdilik iyi geliyor.', correct: true, wrongWord: '', correctWord: 'akupunktur' }
+    ]},
+    { number: 2, text: "2. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Tatil rezervasyonu için yeni açılan bir <b>acenta</b> ile konuştuk.', correct: false, wrongWord: 'acenta', correctWord: 'acente' },
+      { text: 'b) Penceredeki çerçeve <b>alüminyum</b> olduğu için oldukça hafif.', correct: true, wrongWord: '', correctWord: 'alüminyum' }
+    ]},
+    { number: 3, text: "3. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Konuşmasında sürekli <b>acitasyon</b> yaparak ortamı gerdi.', correct: false, wrongWord: 'acitasyon', correctWord: 'ajitasyon' },
+      { text: 'b) Bahar gelince <b>alerji</b> belirtilerim artıyor, burnum durmadan kaşınıyor.', correct: true, wrongWord: '', correctWord: 'alerji' }
+    ]},
+    { number: 4, text: "4. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Maçta sakatlanan sporcunun bacağında <b>adele</b> yırtığı oluşmuş.', correct: false, wrongWord: 'adele', correctWord: 'adale' },
+      { text: 'b) Bozuk <b>amortisör</b> yüzünden arabada en küçük çukurda bile sarsılıyoruz.', correct: true, wrongWord: '', correctWord: 'amortisör' }
+    ]},
+    { number: 5, text: "5. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Oteldeki <b>ahçı</b> balık çorbasını harika yapmıştı.', correct: false, wrongWord: 'ahçı', correctWord: 'aşçı' },
+      { text: 'b) Bu dönem <b>anatomi</b> dersinin laboratuvar kısmı daha yoğun geçecek.', correct: true, wrongWord: '', correctWord: 'anatomi' }
+    ]},
+    { number: 6, text: "6. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Yıllar sonra çocukluk <b>ahpap</b> ile çarşıda karşılaştım.', correct: false, wrongWord: 'ahpap', correctWord: 'ahbap' },
+      { text: 'b) Takım sabah erken saatte <b>antrenman</b> yapmak zorundaydı.', correct: true, wrongWord: '', correctWord: 'antrenman' }
+    ]},
+    { number: 7, text: "7. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Sabah <b>alarım</b> çalmadığı için derse geç kaldım.', correct: false, wrongWord: 'alarım', correctWord: 'alarm' },
+      { text: 'b) Konser alanındaki <b>hoparlör</b> arızalanınca müzik bir anda kesildi.', correct: true, wrongWord: '', correctWord: 'hoparlör' }
+    ]},
+    { number: 8, text: "8. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Şiddetli dalgada küçük sandal bir anda <b>alobora</b> oldu.', correct: false, wrongWord: 'alobora', correctWord: 'alabora' },
+      { text: 'b) Bayram <b>arife</b> günü çarşı pazarda kalabalık hiç bitmez.', correct: true, wrongWord: '', correctWord: 'arife' }
+    ]},
+    { number: 9, text: "9. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Sohbet arasında <b>antiparantez</b> küçük bir espri yaptı.', correct: false, wrongWord: 'antiparantez', correctWord: 'antrparantez' },
+      { text: 'b) Tiyatroda usta bir <b>artist</b> sahneye çıkınca herkes sustu.', correct: true, wrongWord: '', correctWord: 'artist' }
+    ]},
+    { number: 10, text: "10. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Bugün ekstra koşu ile <b>antreman</b> süresini uzatacağız.', correct: false, wrongWord: 'antreman', correctWord: 'antrenman' },
+      { text: 'b) Toplantıda ücretlerin <b>asgari</b> düzeyi tekrar tartışıldı.', correct: true, wrongWord: '', correctWord: 'asgari' }
+    ]},
+    { number: 11, text: "11. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Tanıtımda dağıtılan <b>aşentiyon</b> ürünler kısa sürede bitti.', correct: false, wrongWord: 'aşentiyon', correctWord: 'eşantiyon' },
+      { text: 'b) Amcam yıllarca <b>astsubay</b> olarak doğuda görev yaptı.', correct: true, wrongWord: '', correctWord: 'astsubay' }
+    ]},
+    { number: 12, text: "12. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Yağmurdan sonra <b>asvalt</b> yolda büyük su birikintileri oluştu.', correct: false, wrongWord: 'asvalt', correctWord: 'asfalt' },
+      { text: 'b) Spora giderken rahat bir <b>eşofman</b> tercih ediyorum.', correct: true, wrongWord: '', correctWord: 'eşofman' }
+    ]}
+  ];
+
+  const container = document.getElementById('quiz-container');
+
+  function createQuestionHTML(q) {
+    const div = document.createElement('div');
+    div.className = 'question';
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = q.text;
+    div.appendChild(h3);
+
+    q.options.forEach((opt, idx) => {
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option';
+      optDiv.innerHTML = opt.text;
+      optDiv.dataset.correct = opt.correct;
+      optDiv.dataset.wrongWord = opt.wrongWord || '';
+      optDiv.dataset.correctWord = opt.correctWord || '';
+      optDiv.onclick = () => toggleFeedback(optDiv);
+      div.appendChild(optDiv);
+
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      div.appendChild(feedbackDiv);
+    });
+
+    return div;
+  }
+
+  function toggleFeedback(optionElement) {
+    const questionDiv = optionElement.parentElement;
+    const options = questionDiv.querySelectorAll('.option');
+    const feedbackDivs = questionDiv.querySelectorAll('.feedback');
+    const index = Array.from(options).indexOf(optionElement);
+    const feedbackDiv = feedbackDivs[index];
+
+    if (feedbackDiv.style.display === 'block') {
+      feedbackDiv.style.display = 'none';
+      return;
+    }
+    feedbackDivs.forEach(fd => fd.style.display = 'none');
+    feedbackDiv.style.display = 'block';
+
+    const wrongWord = optionElement.dataset.wrongWord;
+    const correctWord = optionElement.dataset.correctWord;
+
+    if (optionElement.dataset.correct === 'true') {
+      feedbackDiv.className = 'feedback correct-feedback';
+      feedbackDiv.innerHTML = `DOĞRU<br><span class="explanation"><span class="correct-word">${escapeHtml(correctWord)}</span> kelimesinin yazımı doğrudur.</span>`;
+    } else {
+      feedbackDiv.className = 'feedback incorrect-feedback';
+      feedbackDiv.innerHTML = `YANLIŞ<br><span class="explanation"><span class="incorrect-word">${escapeHtml(wrongWord)}</span> yazımı hatalıdır, doğrusu <span class="correct-word">${escapeHtml(correctWord)}</span> olmalıdır.</span>`;
+    }
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, "&amp;")
+               .replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+  }
+
+  questions.forEach(q => container.appendChild(createQuestionHTML(q)));
+</script>
+
+</body>
+</html>

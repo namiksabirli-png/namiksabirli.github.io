@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>YAZIM – SET 6 (nsabirli)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+  body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; color: #333; }
+  h1 { text-align: center; margin-bottom: 30px; font-size: 2.2em; color: #222; }
+  .italic-nsabirli { font-family: 'Nanum Pen Script', cursive; font-style: italic; }
+  .question { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; padding: 18px; }
+  .question h3 { margin-top: 0; font-weight: 700; color: #333; }
+  .option { background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px; padding: 10px 14px; margin: 8px 0; cursor: pointer; user-select: none; transition: background-color 0.15s ease; }
+  .option:hover { background-color: #efefef; }
+  .feedback { margin-top: 10px; font-weight: 600; font-size: 1rem; }
+  .correct-feedback { color: #2e7d32; }
+  .incorrect-feedback { color: #c62828; }
+  .correct-word { color: #2e7d32; font-weight: 700; }
+  .incorrect-word { color: #c62828; font-weight: 700; }
+  .explanation { font-weight: 500; color: #222; display: block; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>YAZIM – SET 6 – nsabirli - <span class="italic-nsabirli">nsabirli</span></h1>
+
+<div id="quiz-container"></div>
+
+<script>
+  const questions = [
+    { number: 1, text: "1. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Restorandaki menüde <b>gardolap</b> yazınca garsona kibarca hatırlattım.', correct: false, wrongWord: 'gardolap', correctWord: 'gardırop' },
+      { text: 'b) Uygulamada <b>kolektif</b> ayarını değiştirince sorun çözüldü.', correct: true, wrongWord: '', correctWord: 'kolektif' }
+    ]},    { number: 2, text: "2. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Bakkalın camındaki afişte <b>izalasyon</b> yazınca herkes birbirine sordu.', correct: false, wrongWord: 'izalasyon', correctWord: 'izolasyon' },
+      { text: 'b) Kütüphanede <b>eşantiyon</b> başlıklı bir kitap buldum, ilginçti.', correct: true, wrongWord: '', correctWord: 'eşantiyon' }
+    ]},    { number: 3, text: "3. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) E-posta başlığında <b>ahpap</b> görünce önce bir yazım hatası sandım.', correct: false, wrongWord: 'ahpap', correctWord: 'ahbap' },
+      { text: 'b) Kütüphanede <b>çiftlik</b> başlıklı bir kitap buldum, ilginçti.', correct: true, wrongWord: '', correctWord: 'çiftlik' }
+    ]},    { number: 4, text: "4. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Bakkalın camındaki afişte <b>espiri</b> yazınca herkes birbirine sordu.', correct: false, wrongWord: 'espiri', correctWord: 'espri' },
+      { text: 'b) Sunumda <b>antrenman</b> terimine verilen örnekler epey açıklayıcıydı.', correct: true, wrongWord: '', correctWord: 'antrenman' }
+    ]},    { number: 5, text: "5. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Yeni açılan mağazanın tabelasında <b>direk</b> yazması dikkatimi çekti.', correct: false, wrongWord: 'direk', correctWord: 'direkt' },
+      { text: 'b) Sunumda <b>iskonto</b> terimine verilen örnekler epey açıklayıcıydı.', correct: true, wrongWord: '', correctWord: 'iskonto' }
+    ]},    { number: 6, text: "6. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Mahalle duyurusunda <b>egsoz</b> kelimesi görünce doğru hâlini paylaştım.', correct: false, wrongWord: 'egsoz', correctWord: 'egzoz' },
+      { text: 'b) Kütüphanede <b>ahbap</b> başlıklı bir kitap buldum, ilginçti.', correct: true, wrongWord: '', correctWord: 'ahbap' }
+    ]},    { number: 7, text: "7. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Mahalle duyurusunda <b>ensitü</b> kelimesi görünce doğru hâlini paylaştım.', correct: false, wrongWord: 'ensitü', correctWord: 'enstitü' },
+      { text: 'b) Sunumda <b>jelatin</b> terimine verilen örnekler epey açıklayıcıydı.', correct: true, wrongWord: '', correctWord: 'jelatin' }
+    ]},    { number: 8, text: "8. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Yeni açılan mağazanın tabelasında <b>alobora</b> yazması dikkatimi çekti.', correct: false, wrongWord: 'alobora', correctWord: 'alabora' },
+      { text: 'b) Gazetede <b>egzoz</b> sözcüğünü yerinde kullanmışlardı, hoşuma gitti.', correct: true, wrongWord: '', correctWord: 'egzoz' }
+    ]},    { number: 9, text: "9. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Toplantı sunusunda <b>erezyon</b> ifadesi geçince birkaç kişi not aldı.', correct: false, wrongWord: 'erezyon', correctWord: 'erozyon' },
+      { text: 'b) Uygulamada <b>kontör</b> ayarını değiştirince sorun çözüldü.', correct: true, wrongWord: '', correctWord: 'kontör' }
+    ]},    { number: 10, text: "10. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Mahalle duyurusunda <b>döküman</b> kelimesi görünce doğru hâlini paylaştım.', correct: false, wrongWord: 'döküman', correctWord: 'doküman' },
+      { text: 'b) Gazetede <b>erozyon</b> sözcüğünü yerinde kullanmışlardı, hoşuma gitti.', correct: true, wrongWord: '', correctWord: 'erozyon' }
+    ]},    { number: 11, text: "11. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) E-posta başlığında <b>anfi</b> görünce önce bir yazım hatası sandım.', correct: false, wrongWord: 'anfi', correctWord: 'amfi' },
+      { text: 'b) Eğitmen, <b>arife</b> yazımını bir kez daha tahtaya yazdı.', correct: true, wrongWord: '', correctWord: 'arife' }
+    ]},    { number: 12, text: "12. HANGİSİ YANLIŞ / DOĞRU?", options: [
+      { text: 'a) Sosyal medyada <b>komünükasyon</b> şeklinde yazmışlar, yorumlarda büyük tartışma çıktı.', correct: false, wrongWord: 'komünükasyon', correctWord: 'komünikasyon' },
+      { text: 'b) Uygulamada <b>komodin</b> ayarını değiştirince sorun çözüldü.', correct: true, wrongWord: '', correctWord: 'komodin' }
+    ]},  ];
+
+  const container = document.getElementById('quiz-container');
+
+  function createQuestionHTML(q) {
+    const div = document.createElement('div');
+    div.className = 'question';
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = q.text;
+    div.appendChild(h3);
+
+    q.options.forEach((opt, idx) => {
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option';
+      optDiv.innerHTML = opt.text;
+      optDiv.dataset.correct = opt.correct;
+      optDiv.dataset.wrongWord = opt.wrongWord || '';
+      optDiv.dataset.correctWord = opt.correctWord || '';
+      optDiv.onclick = () => toggleFeedback(optDiv);
+      div.appendChild(optDiv);
+
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      div.appendChild(feedbackDiv);
+    });
+
+    return div;
+  }
+
+  function toggleFeedback(optionElement) {
+    const questionDiv = optionElement.parentElement;
+    const options = questionDiv.querySelectorAll('.option');
+    const feedbackDivs = questionDiv.querySelectorAll('.feedback');
+    const index = Array.from(options).indexOf(optionElement);
+    const feedbackDiv = feedbackDivs[index];
+
+    if (feedbackDiv.style.display === 'block') {
+      feedbackDiv.style.display = 'none';
+      return;
+    }
+    feedbackDivs.forEach(fd => fd.style.display = 'none');
+    feedbackDiv.style.display = 'block';
+
+    const wrongWord = optionElement.dataset.wrongWord;
+    const correctWord = optionElement.dataset.correctWord;
+
+    if (optionElement.dataset.correct === 'true') {
+      feedbackDiv.className = 'feedback correct-feedback';
+      feedbackDiv.innerHTML = `DOĞRU<br><span class="explanation"><span class="correct-word">${escapeHtml(correctWord)}</span> kelimesinin yazımı doğrudur.</span>`;
+    } else {
+      feedbackDiv.className = 'feedback incorrect-feedback';
+      feedbackDiv.innerHTML = `YANLIŞ<br><span class="explanation"><span class="incorrect-word">${escapeHtml(wrongWord)}</span> yazımı hatalıdır, doğrusu <span class="correct-word">${escapeHtml(correctWord)}</span> olmalıdır.</span>`;
+    }
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, "&amp;")
+               .replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+  }
+
+  questions.forEach(q => container.appendChild(createQuestionHTML(q)));
+</script>
+
+</body>
+</html>

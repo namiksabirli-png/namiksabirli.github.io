@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>YAZIM – TÜM SÖZCÜKLER (A parçası: WRONG=ilk yarı, CORRECT=ikinci yarı) – Set 1</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; color: #333; }
+  h1 { text-align: center; margin-bottom: 30px; font-size: 2.2em; color: #222; }
+  .question { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; padding: 18px; }
+  .question h3 { margin-top: 0; font-weight: 700; color: #333; }
+  .option { background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px; padding: 10px 14px; margin: 8px 0; cursor: pointer; }
+  .option:hover { background-color: #efefef; }
+  .feedback { margin-top: 10px; font-weight: 600; font-size: 1rem; }
+  .correct-feedback { color: #2e7d32; }
+  .incorrect-feedback { color: #c62828; }
+  .correct-word { color: #2e7d32; font-weight: 700; }
+  .incorrect-word { color: #c62828; font-weight: 700; }
+  .explanation { font-weight: 500; color: #222; display: block; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>YAZIM – TÜM SÖZCÜKLER (A parçası: WRONG=ilk yarı, CORRECT=ikinci yarı) – Set 1</h1>
+
+<div id="quiz-container"></div>
+
+<script>
+  const questions = [
+    {
+      number: 1, text: "1. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Sabah işe giderken <b>labaratuar</b> cihazlarıyla ilgili bir sorun yaşadım.', correct: false, wrongWord: 'labaratuar', correctWord: 'laboratuvar' },
+        { text: 'b) Programı büyük bir <b>stüdyoda</b> çektiler.', correct: true, wrongWord: '', correctWord: 'stüdyoda' }
+      ]},
+    {
+      number: 2, text: "2. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Arkadaşım bana yeni aldığı beyaz <b>lavobo</b> hakkında uzun uzun anlattı.', correct: false, wrongWord: 'lavobo', correctWord: 'lavabo' },
+        { text: 'b) Arabada ciddi bir <b>şanzıman</b> arızası çıktı.', correct: true, wrongWord: '', correctWord: 'şanzıman' }
+      ]},
+    {
+      number: 3, text: "3. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Dün markette alışveriş yaparken yanlışlıkla <b>laylon</b> kelimesini yanlış kullandım.', correct: false, wrongWord: 'laylon', correctWord: 'naylon' },
+        { text: 'b) Elektrik kesilince otomatik <b>şalter</b> attı.', correct: true, wrongWord: '', correctWord: 'şalter' }
+      ]},
+    {
+      number: 4, text: "4. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Öğretmen derste tahtaya <b>mahçup</b> sözcüğünü örnek olarak yazdı.', correct: false, wrongWord: 'mahçup', correctWord: 'mahcup' },
+        { text: 'b) Telefonu sabaha kadar <b>şarj</b> ettim.', correct: true, wrongWord: '', correctWord: 'şarj' }
+      ]},
+    {
+      number: 5, text: "5. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Komşum, konuşurken sürekli <b>mahfolmak</b> kelimesini sık sık tekrar ediyor.', correct: false, wrongWord: 'mahfolmak', correctWord: 'mahvolmak' },
+        { text: 'b) Ortada derin bir <b>şaibe</b> vardı.', correct: true, wrongWord: '', correctWord: 'şaibe' }
+      ]},
+    {
+      number: 6, text: "6. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Bu davranışı özellikle bana <b>mahsuz</b> olarak yapmaya çalıştı.', correct: false, wrongWord: 'mahsuz', correctWord: 'mahsus' },
+        { text: 'b) Anne çocuğuna büyük bir <b>şefkat</b> gösterdi.', correct: true, wrongWord: '', correctWord: 'şefkat' }
+      ]},
+    {
+      number: 7, text: "7. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Maçta hakem yanlış bir <b>opsayd</b> kararı vermek zorunda kaldı.', correct: false, wrongWord: 'opsayd', correctWord: 'ofsayt' },
+        { text: 'b) Banyoda eski bir <b>şofben</b> kullanıyordu.', correct: true, wrongWord: '', correctWord: 'şofben' }
+      ]},
+    {
+      number: 8, text: "8. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Bu çanta bana çok şık ve <b>orjinal</b> görünüyor.', correct: false, wrongWord: 'orjinal', correctWord: 'orijinal' },
+        { text: 'b) Arabayı dikkatli yaşlı bir <b>şoför</b> sürüyordu.', correct: true, wrongWord: '', correctWord: 'şoför' }
+      ]},
+    {
+      number: 9, text: "9. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Haberleri duyunca insanlar kolayca <b>şok olmak</b> eğilimine girer.', correct: false, wrongWord: 'şok olmak', correctWord: 'şoke olmak' },
+        { text: 'b) Arkadaşım bana önemli bir <b>tavsiye</b> verdi.', correct: true, wrongWord: '', correctWord: 'tavsiye' }
+      ]},
+    {
+      number: 10, text: "10. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Dil bilgisi dersinde önemli bir <b>öğe</b> konusunu işledik.', correct: false, wrongWord: 'öğe', correctWord: 'öge' },
+        { text: 'b) Sunucu daveti törenle <b>takdim</b> etti.', correct: true, wrongWord: '', correctWord: 'takdim' }
+      ]},
+    {
+      number: 11, text: "11. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Hasta, doktorundan ölümle ilgili <b>ötenazi</b> yapılmasını istedi.', correct: false, wrongWord: 'ötenazi', correctWord: 'ötanazi' },
+        { text: 'b) Çalışmaları için özel bir <b>takdir</b> aldı.', correct: true, wrongWord: '', correctWord: 'takdir' }
+      ]},
+    {
+      number: 12, text: "12. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Çocuk tiyatroda sahnede <b>palyoça</b> kılığına girdi.', correct: false, wrongWord: 'palyoça', correctWord: 'palyaço' },
+        { text: 'b) Belgeyi müdür resmi olarak <b>tasdik</b> etti.', correct: true, wrongWord: '', correctWord: 'tasdik' }
+      ]}
+  ];
+
+  const container = document.getElementById('quiz-container');
+
+  function createQuestionHTML(q) {
+    const div = document.createElement('div');
+    div.className = 'question';
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = q.text;
+    div.appendChild(h3);
+
+    q.options.forEach((opt, idx) => {
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option';
+      optDiv.innerHTML = opt.text;
+      optDiv.dataset.correct = opt.correct;
+      optDiv.dataset.wrongWord = opt.wrongWord || '';
+      optDiv.dataset.correctWord = opt.correctWord || '';
+      optDiv.onclick = () => toggleFeedback(optDiv);
+      div.appendChild(optDiv);
+
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      div.appendChild(feedbackDiv);
+    });
+
+    return div;
+  }
+
+  function toggleFeedback(optionElement) {
+    const questionDiv = optionElement.parentElement;
+    const options = questionDiv.querySelectorAll('.option');
+    const feedbackDivs = questionDiv.querySelectorAll('.feedback');
+    const index = Array.from(options).indexOf(optionElement);
+    const feedbackDiv = feedbackDivs[index];
+
+    if (feedbackDiv.style.display === 'block') {
+      feedbackDiv.style.display = 'none';
+      return;
+    }
+    feedbackDivs.forEach(fd => fd.style.display = 'none');
+    feedbackDiv.style.display = 'block';
+
+    const wrongWord = optionElement.dataset.wrongWord;
+    const correctWord = optionElement.dataset.correctWord;
+
+    if (optionElement.dataset.correct === 'true') {
+      feedbackDiv.className = 'feedback correct-feedback';
+      feedbackDiv.innerHTML = 'DOĞRU<br><span class="explanation"><span class="correct-word">' + escapeHtml(correctWord) + '</span> kelimesinin yazımı doğrudur.</span>';
+    } else {
+      feedbackDiv.className = 'feedback incorrect-feedback';
+      feedbackDiv.innerHTML = 'YANLIŞ<br><span class="explanation"><span class="incorrect-word">' + escapeHtml(wrongWord) + '</span> yazımı hatalıdır, doğrusu <span class="correct-word">' + escapeHtml(correctWord) + '</span> olmalıdır.</span>';
+    }
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, "&amp;")
+               .replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+  }
+
+  questions.forEach(q => container.appendChild(createQuestionHTML(q)));
+</script>
+
+</body>
+</html>
