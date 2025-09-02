@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>YAZIM – TÜM SÖZCÜKLER (B parçası: WRONG=ikinci yarı, CORRECT=ilk yarı) – Set 4</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; color: #333; }
+  h1 { text-align: center; margin-bottom: 30px; font-size: 2.2em; color: #222; }
+  .question { background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; padding: 18px; }
+  .question h3 { margin-top: 0; font-weight: 700; color: #333; }
+  .option { background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px; padding: 10px 14px; margin: 8px 0; cursor: pointer; }
+  .option:hover { background-color: #efefef; }
+  .feedback { margin-top: 10px; font-weight: 600; font-size: 1rem; }
+  .correct-feedback { color: #2e7d32; }
+  .incorrect-feedback { color: #c62828; }
+  .correct-word { color: #2e7d32; font-weight: 700; }
+  .incorrect-word { color: #c62828; font-weight: 700; }
+  .explanation { font-weight: 500; color: #222; display: block; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>YAZIM – TÜM SÖZCÜKLER (B parçası: WRONG=ikinci yarı, CORRECT=ilk yarı) – Set 4</h1>
+
+<div id="quiz-container"></div>
+
+<script>
+  const questions = [
+    {
+      number: 37, text: "37. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Okulda yeni güzel bir <b>ünüforma</b> dağıtıldı.', correct: false, wrongWord: 'ünüforma', correctWord: 'üniforma' },
+        { text: 'b) Bugün çok yoğun bir <b>sağanak</b> yağmur yağdı.', correct: true, wrongWord: '', correctWord: 'sağanak' }
+      ]},
+    {
+      number: 38, text: "38. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Diplomasında yanlışlıkla eski bir <b>ünvan</b> yazıyordu.', correct: false, wrongWord: 'ünvan', correctWord: 'unvan' },
+        { text: 'b) Öğle yemeğinde leziz bir <b>sandviç</b> yedik.', correct: true, wrongWord: '', correctWord: 'sandviç' }
+      ]},
+    {
+      number: 39, text: "39. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Çocuklar bahçede keyifle <b>valeybol</b> oynuyordu.', correct: false, wrongWord: 'valeybol', correctWord: 'voleybol' },
+        { text: 'b) Arabaya aniden uzun bir <b>selektör</b> yaptı.', correct: true, wrongWord: '', correctWord: 'selektör' }
+      ]},
+    {
+      number: 40, text: "40. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Arkadaşım yemekte daima <b>vejeteryan</b> menü seçti.', correct: false, wrongWord: 'vejeteryan', correctWord: 'vejetaryen' },
+        { text: 'b) Kutlama için geniş kapsamlı bir <b>seremoni</b> düzenlendi.', correct: true, wrongWord: '', correctWord: 'seremoni' }
+      ]},
+    {
+      number: 41, text: "41. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Bilgisayara hızla kötü bir <b>vürüs</b> bulaşmış.', correct: false, wrongWord: 'vürüs', correctWord: 'virüs' },
+        { text: 'b) Tatile çıkmadan detaylı bir <b>seyahat</b> planı yaptık.', correct: true, wrongWord: '', correctWord: 'seyahat' }
+      ]},
+    {
+      number: 42, text: "42. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Defterde birkaç bariz <b>yalnış</b> yazım vardı.', correct: false, wrongWord: 'yalnış', correctWord: 'yanlış' },
+        { text: 'b) Kadın doğum sırasında acil bir <b>sezaryen</b> oldu.', correct: true, wrongWord: '', correctWord: 'sezaryen' }
+      ]},
+    {
+      number: 43, text: "43. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Makaleyi internette hemen <b>yayınlamak</b> istedi.', correct: false, wrongWord: 'yayınlamak', correctWord: 'yayımlamak' },
+        { text: 'b) Filmde eski cesur bir <b>silahşor</b> vardı.', correct: true, wrongWord: '', correctWord: 'silahşor' }
+      ]},
+    {
+      number: 44, text: "44. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Köyde taze sıcak <b>yımırta</b> aldık.', correct: false, wrongWord: 'yımırta', correctWord: 'yumurta' },
+        { text: 'b) Kitapta korkunç bir <b>soykırım</b> işlendi.', correct: true, wrongWord: '', correctWord: 'soykırım' }
+      ]},
+    {
+      number: 45, text: "45. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) İşçiler günlük düzenli <b>yövmiye</b> alıyorlardı.', correct: false, wrongWord: 'yövmiye', correctWord: 'yevmiye' },
+        { text: 'b) Stadyum yerine yanlış bir <b>stadyum</b> yazmış.', correct: true, wrongWord: '', correctWord: 'stadyum' }
+      ]},
+    {
+      number: 46, text: "46. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Usta bu işi büyük bir <b>zenaat</b> olarak görüyordu.', correct: false, wrongWord: 'zenaat', correctWord: 'zanaat' },
+        { text: 'b) Motorda yeni bir <b>supap</b> değiştirildi.', correct: true, wrongWord: '', correctWord: 'supap' }
+      ]},
+    {
+      number: 47, text: "47. HANGİSİ YANLIŞ / DOĞRU?", options: [
+        { text: 'a) Kadının inanılmaz büyük bir <b>zerafet</b>i dikkat çekti.', correct: false, wrongWord: 'zerafet', correctWord: 'zarafet' },
+        { text: 'b) Doğum gününde büyük bir <b>sürpriz</b> hazırladık.', correct: true, wrongWord: '', correctWord: 'sürpriz' }
+      ]}
+  ];
+
+  const container = document.getElementById('quiz-container');
+
+  function createQuestionHTML(q) {
+    const div = document.createElement('div');
+    div.className = 'question';
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = q.text;
+    div.appendChild(h3);
+
+    q.options.forEach((opt, idx) => {
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option';
+      optDiv.innerHTML = opt.text;
+      optDiv.dataset.correct = opt.correct;
+      optDiv.dataset.wrongWord = opt.wrongWord || '';
+      optDiv.dataset.correctWord = opt.correctWord || '';
+      optDiv.onclick = () => toggleFeedback(optDiv);
+      div.appendChild(optDiv);
+
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      div.appendChild(feedbackDiv);
+    });
+
+    return div;
+  }
+
+  function toggleFeedback(optionElement) {
+    const questionDiv = optionElement.parentElement;
+    const options = questionDiv.querySelectorAll('.option');
+    const feedbackDivs = questionDiv.querySelectorAll('.feedback');
+    const index = Array.from(options).indexOf(optionElement);
+    const feedbackDiv = feedbackDivs[index];
+
+    if (feedbackDiv.style.display === 'block') {
+      feedbackDiv.style.display = 'none';
+      return;
+    }
+    feedbackDivs.forEach(fd => fd.style.display = 'none');
+    feedbackDiv.style.display = 'block';
+
+    const wrongWord = optionElement.dataset.wrongWord;
+    const correctWord = optionElement.dataset.correctWord;
+
+    if (optionElement.dataset.correct === 'true') {
+      feedbackDiv.className = 'feedback correct-feedback';
+      feedbackDiv.innerHTML = 'DOĞRU<br><span class="explanation"><span class="correct-word">' + escapeHtml(correctWord) + '</span> kelimesinin yazımı doğrudur.</span>';
+    } else {
+      feedbackDiv.className = 'feedback incorrect-feedback';
+      feedbackDiv.innerHTML = 'YANLIŞ<br><span class="explanation"><span class="incorrect-word">' + escapeHtml(wrongWord) + '</span> yazımı hatalıdır, doğrusu <span class="correct-word">' + escapeHtml(correctWord) + '</span> olmalıdır.</span>';
+    }
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, "&amp;")
+               .replace(/</g, "&lt;")
+               .replace(/>/g, "&gt;")
+               .replace(/"/g, "&quot;")
+               .replace(/'/g, "&#039;");
+  }
+
+  questions.forEach(q => container.appendChild(createQuestionHTML(q)));
+</script>
+
+</body>
+</html>
