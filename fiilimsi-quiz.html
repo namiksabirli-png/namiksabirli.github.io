@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Fiilimsi Tıklama Quizi – Numaralı / Sıfırlamalı / Mobil Uyumlu</title>
+<style>
+  :root{
+    --ans-bg:#fff7ed;    /* açık turuncu arka plan */
+    --ans-ok:#16a34a;    /* yeşil yazı */
+    --ans-no:#b91c1c;    /* kırmızı yazı */
+    --ans-border:#fdba74;/* turuncu kenar */
+  }
+  body{font-family:Arial,Helvetica,sans-serif;line-height:1.85;padding:24px;max-width:1100px;margin:auto}
+  h2{margin:0 0 10px}
+  .hint{color:#475569;font-style:italic;margin:8px 0 16px}
+  #controls{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+  button{padding:6px 10px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:8px;cursor:pointer}
+  button:hover{background:#eef2f7}
+  /* satır */
+  .line{display:flex; gap:10px; align-items:flex-start; border-bottom:1px dashed #e5e7eb; padding:8px 0}
+  .num{width:36px; min-width:36px; color:#2563eb; font-weight:700}
+  .content{flex:1}
+  .ans{
+    min-width:320px;
+    text-align:right;
+    font-weight:700;
+    padding:6px 10px;
+    border-radius:8px;
+    background:var(--ans-bg);
+    border:1px solid var(--ans-border);
+    color:#334155;
+  }
+  .ans.ok{color:var(--ans-ok); background:#ecfdf5; border-color:#86efac}
+  .ans.no{color:var(--ans-no); background:#fff1f2; border-color:#fecaca}
+  .w{cursor:pointer;padding:0 2px;border-radius:4px;transition:background .15s}
+  .w:hover{background:#f1f5f9}
+  /* mobilde cevap alanını alta taşı */
+  @media (max-width: 700px){
+    .line{flex-direction:column; align-items:stretch}
+    .num{width:auto; min-width:unset}
+    .ans{min-width:unset; text-align:left; margin-top:6px}
+  }
+</style>
+</head>
+<body>
+<h2>Fiilimsileri Bul – numaralı cümleler</h2>
+<div class="hint">Kelimelere tıkla: Fiilimsi değilse kırmızı “fiilimsi değil”; fiilimsi ise yeşil “kelime = tür”. “Sıfırla” tüm cevapları temizler. Mobil ekranda cevap, satırın altında görünür.</div>
+
+<div id="controls">
+  <button id="resetBtn">Sıfırla</button>
+</div>
+
+<div id="wrap"></div>
+
+<script>
+// ============ METİN (ipucu parantezleri kaldırıldı) ============
+const lines = [
+  "Yeni bir dil öğrenmek, insanın hayata bakışını değiştiren ve farklı kültürlerle tanışırken ufkunu genişleten bir süreçtir.",
+  "Kitap okumak, insanın iç dünyasını zenginleştiren ve hayal gücünü geliştirerek düşüncelerini derinleştiren bir alışkanlıktır.",
+  "Ders çalışmayı sevmeyen öğrencilerden bazıları, öğretmenin verdiği ödevi yapmadıklarını söyleyince mahcup oldular.",
+  "Doğada uzun uzun yürümek, insana huzur veren kuş seslerini dinleyerek ruhu dinlendiren bir etkinliktir.",
+  "Yeni telefon almak, herkesin hayalini süsleyen bir şeydi, fakat fiyatını görünce çoğu vazgeçti.",
+  "İnsanlarla sağlıklı iletişim kurmak, bitmez bir sabır isteyen bir uğraştır; başkalarını dinlerken öğrenilenler, hayatın her alanında işe yarar.",
+  "Yaşamın anlamını sorgulayıp doğru yolu bulmak, yarın yapacak işleri düşünürken daha kolay olur.",
+  "Zorluklarla mücadele etmek, dün yaşanmış olayları hatırlayınca insana güç verir.",
+  "İnsanlara yardım etmek, çevresindeki herkesi mutlu eden bir davranıştır; bunu yaparken insan kendini de huzurlu hisseder.",
+  "Kitap okumayı alışkanlık hâline getiren, anlatılanları dikkatle dinleyen öğrenciler, sınava hazırlanırken daha başarılı olurlar.",
+  "Yeni projeler üretip uygulamaya koymak, yapılması gereken en önemli iştir; insanlar birlikte çalışırken daha verimli olurlar.",
+  "Hayal kurup bunun için çaba göstermek, insanı ileriye taşıyan ve hedefe ulaşırken yol gösteren bir alışkanlıktır.",
+  "Sağlıklı yaşamak için spor yapmak, düzenli yemek yiyen insanlarda daha etkili olur; hareket ederken beden de ruh da güçlenir.",
+  "İnsanların düşüncelerini özgürce söylemeleri, geleceği belirleyecek kararların alınırken daha doğru olmasını sağlar.",
+  "Çalışıp üretmek ve başarmak, görülmemiş işler yaparken insana büyük gurur verir."
+];
+
+// ============ TEK KELİME HARİTA ============
+const singleMap = {
+  "öğrenmek":"isim-fiil","bakışını":"isim-fiil","değiştiren":"sıfat-fiil","tanışırken":"zarf-fiil","genişleten":"sıfat-fiil",
+  "okumak":"isim-fiil","zenginleştiren":"sıfat-fiil","geliştirerek":"zarf-fiil","derinleştiren":"sıfat-fiil",
+  "çalışmayı":"isim-fiil","sevmeyen":"sıfat-fiil","verdiği":"sıfat-fiil","yapmadıklarını":"sıfat-fiil","söyleyince":"zarf-fiil",
+  "yürümek":"isim-fiil","veren":"sıfat-fiil","dinleyerek":"zarf-fiil","dinlendiren":"sıfat-fiil",
+  "almak":"isim-fiil","süsleyen":"sıfat-fiil","görünce":"zarf-fiil",
+  "kurmak":"isim-fiil","bitmez":"sıfat-fiil","isteyen":"sıfat-fiil","dinlerken":"zarf-fiil","öğrenilenler":"sıfat-fiil",
+  "sorgulayıp":"zarf-fiil","bulmak":"isim-fiil","yapacak":"sıfat-fiil","düşünürken":"zarf-fiil",
+  "etmek":"isim-fiil","yaşanmış":"sıfat-fiil","hatırlayınca":"zarf-fiil",
+  "mutlu":"", "eden":"sıfat-fiil",
+  "okumayı":"isim-fiil","getiren":"sıfat-fiil","anlatılanları":"sıfat-fiil","dinleyen":"sıfat-fiil","hazırlanırken":"zarf-fiil",
+  "üretip":"zarf-fiil","koymak":"isim-fiil","gereken":"sıfat-fiil","çalışırken":"zarf-fiil",
+  "kurup":"zarf-fiil","göstermek":"isim-fiil","taşıyan":"sıfat-fiil","ulaşırken":"zarf-fiil","gösteren":"sıfat-fiil",
+  "yaşamak":"isim-fiil","spor":"", "yapmak":"isim-fiil","yiyen":"sıfat-fiil","ederken":"zarf-fiil",
+  "söylemeleri":"isim-fiil","belirleyecek":"sıfat-fiil","alınırken":"zarf-fiil",
+  "çalışıp":"zarf-fiil","üretmek":"isim-fiil","başarmak":"isim-fiil","görülmemiş":"sıfat-fiil","yaparken":"zarf-fiil"
+};
+
+// ============ İKİ SÖZCÜKLÜ KALIPLAR ============
+const phraseMap = {
+  "huzur veren":"sıfat-fiil",
+  "mücadele etmek":"isim-fiil",
+  "yardım etmek":"isim-fiil",
+  "spor yapmak":"isim-fiil",
+  "hareket ederken":"zarf-fiil"
+};
+
+// Yardımcılar
+function norm(t){ return t.toLocaleLowerCase("tr").replace(/[.,!?;:()«»"“”'’—\-]/g,"").trim(); }
+
+const wrap = document.getElementById("wrap");
+const resetBtn = document.getElementById("resetBtn");
+let tokens = [];
+let lineAnsEls = [];
+
+// Oluştur
+function build(){
+  wrap.innerHTML = "";
+  tokens = [];
+  lineAnsEls = [];
+
+  lines.forEach((rawLine, lineIdx)=>{
+    const row = document.createElement("div");
+    row.className = "line";
+
+    const num = document.createElement("div");
+    num.className = "num";
+    num.textContent = (lineIdx+1)+".";
+
+    const content = document.createElement("div");
+    content.className = "content";
+
+    const ans = document.createElement("div");
+    ans.className = "ans";
+    ans.textContent = "—";
+
+    rawLine.split(/(\s+)/).forEach((piece, tokenIdx)=>{
+      if(/\s+/.test(piece)){
+        content.appendChild(document.createTextNode(piece));
+      }else{
+        const sp = document.createElement("span");
+        sp.className = "w";
+        sp.textContent = piece;
+        sp.onclick = ()=>onWordClick(sp, lineIdx, tokenIdx);
+        tokens.push({el:sp, word:piece, lineIdx, tokenIdx});
+        content.appendChild(sp);
+      }
+    });
+
+    row.appendChild(num);
+    row.appendChild(content);
+    row.appendChild(ans);
+    wrap.appendChild(row);
+    lineAnsEls[lineIdx] = ans;
+  });
+}
+
+function setAnswer(lineIdx, ok, text){
+  const ans = lineAnsEls[lineIdx];
+  ans.classList.remove("ok","no");
+  ans.classList.add(ok?"ok":"no");
+  ans.textContent = text;
+}
+
+function onWordClick(sp, lineIdx, tokenIdx){
+  const word = norm(sp.textContent);
+  const prev = tokens.find(t=>t.lineIdx===lineIdx && t.tokenIdx===tokenIdx-1);
+  const next = tokens.find(t=>t.lineIdx===lineIdx && t.tokenIdx===tokenIdx+1);
+  const prevW = prev ? norm(prev.word) : "";
+  const nextW = next ? norm(next.word) : "";
+
+  // 1) iki sözcüklü kalıplar
+  let phrase="", ptype="";
+  const pair1 = prevW ? (prevW+" "+word) : "";
+  const pair2 = nextW ? (word+" "+nextW) : "";
+  if(phraseMap[pair1]){ phrase=pair1; ptype=phraseMap[pair1]; }
+  else if(phraseMap[pair2]){ phrase=pair2; ptype=phraseMap[pair2]; }
+
+  if(phrase){
+    setAnswer(lineIdx, true, `${phrase} = ${ptype}`);
+    return;
+  }
+
+  // 2) tek kelime
+  const t = singleMap[word] || "";
+  if(t){
+    if(word==="veren" && prevW){ setAnswer(lineIdx,true,`${prevW} veren = ${t}`);}
+    else if(word==="eden" && prevW){ setAnswer(lineIdx,true,`${prevW} eden = ${t}`);}
+    else if(word==="ederken" && prevW){ setAnswer(lineIdx,true,`${prevW} ederken = zarf-fiil`);}
+    else{
+      const clean = sp.textContent.replace(/[.,!?;:()«»"“”'’—\-]/g,"");
+      setAnswer(lineIdx, true, `${clean} = ${t}`);
+    }
+  }else{
+    setAnswer(lineIdx, false, "fiilimsi değil");
+  }
+}
+
+// Sıfırla: cevapları temizle
+resetBtn.onclick = ()=>{
+  lineAnsEls.forEach(el=>{
+    el.classList.remove("ok","no");
+    el.textContent = "—";
+  });
+};
+
+build();
+</script>
+</body>
+</html>
