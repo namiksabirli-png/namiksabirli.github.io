@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Yazım Soruları-NS (100 Soru Tam)</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    padding: 20px;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #222;
+  }
+  .question {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    padding: 20px;
+  }
+  .question h3 {
+    margin-top: 0;
+    font-weight: 600;
+    color: #444;
+  }
+  .option {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin: 10px 0;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+  }
+  .option:hover {
+    background-color: #e0e0e0;
+  }
+  .feedback {
+    margin-top: 12px;
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+  .correct-feedback {
+    color: #2e7d32; /* yeşil */
+    text-transform: uppercase;
+  }
+  .incorrect-feedback {
+    color: #c62828; /* kırmızı */
+    text-transform: uppercase;
+  }
+  .correct-word {
+    color: #2e7d32;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .incorrect-word {
+    color: #c62828;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .explanation {
+    text-transform: none;
+    font-weight: normal;
+  }
+</style>
+</head>
+<body>
+
+<h1>Yazım Soruları-NS (100 Soru Tam)</h1>
+
+<div id="quiz-container"></div>
+
+<script>
+  const questions = [
+    {number:1,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Dün sana söylediğim gibi bu konuda <b>bir gün</b> daha bekleyeceğiz.',correct:true,correctWord:'bir gün'},
+      {text:'Bugün dışarıda <b>birşey</b> unuttum, onu almam lazım.',correct:false,wrongWord:'birşey',correctWord:'bir şey'}
+    ]},
+    {number:2,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çantamın içinde dikkat et, <b>birkaç</b> defter kalmış.',correct:true,correctWord:'birkaç'},
+      {text:'Öğretmen bana <b>pekçok</b> soru sordu.',correct:false,wrongWord:'pekçok',correctWord:'pek çok'}
+    ]},
+    {number:3,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yol boyunca yanıma aldığım <b>yanı sıra</b> kitapları da getirdim.',correct:true,correctWord:'yanı sıra'},
+      {text:'O işlemleri yapmak için oraya <b>vaz geçmek</b> gerekiyordu.',correct:false,wrongWord:'vaz geçmek',correctWord:'vazgeçmek'}
+    ]},
+    {number:4,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bu çalışmayı hazırlarken konuyu iyice <b>öngörmek</b> gerekir.',correct:true,correctWord:'öngörmek'},
+      {text:'Olayları <b>rastgelmek</b> gibi değerlendirmek doğru değil.',correct:false,wrongWord:'rastgelmek',correctWord:'rastlamak/rast gelmek'}
+    ]},
+    {number:5,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'O günkü konuşmasında çok <b>yalnız</b> hissettiğini söyledi.',correct:true,correctWord:'yalnız'},
+      {text:'Yazarın <b>klavuz</b> kitabını herkes okumuştu.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:6,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Küçük çocuk yere düşüp <b>kirpik</b>lerini yaraladı.',correct:true,correctWord:'kirpik'},
+      {text:'O gün babasıyla yaptığı uzun <b>ropörtaj</b> gazetede yayımlandı.',correct:false,wrongWord:'ropörtaj',correctWord:'röportaj'}
+    ]},
+    {number:7,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sporcular sabah <b>antrenman</b> için sahaya çıktılar.',correct:true,correctWord:'antrenman'},
+      {text:'Öğrenci sınav öncesinde yanlış <b>mataryal</b> kullandı.',correct:false,wrongWord:'mataryal',correctWord:'materyal'}
+    ]},
+    {number:8,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuk yeni aldığı <b>poğaça</b>yı iştahla yedi.',correct:true,correctWord:'poğaça'},
+      {text:'İşçi sesini duyunca <b>eksoz</b> kokusundan rahatsız oldu.',correct:false,wrongWord:'eksoz',correctWord:'egzoz'}
+    ]},
+    {number:9,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çalışmanın sonunda ilginç bir <b>espri</b> yaptı.',correct:true,correctWord:'espri'},
+      {text:'Bu kitabın yazarı çok <b>entellektüel</b> görünüyor.',correct:false,wrongWord:'entellektüel',correctWord:'entelektüel'}
+    ]},
+    {number:10,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çiftçi tarlasında bol bol <b>karnabahar</b> yetiştiriyor.',correct:true,correctWord:'karnabahar'},
+      {text:'Tarih kitabında yanlış bir <b>dinazor</b> resmi vardı.',correct:false,wrongWord:'dinazor',correctWord:'dinozor'}
+    ]},
+    {number:11,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sabah kahvaltısında sıcak bir <b>çember</b> simidi yedik.',correct:false,wrongWord:'çember',correctWord:'çörek/ simit'},
+      {text:'Usta marangoz tahtaya <b>deynek</b> çakmaya çalışıyordu.',correct:false,wrongWord:'deynek',correctWord:'değnek'}
+    ]},
+    {number:12,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yeni aldığım telefonun içindeki küçük <b>makine</b> arızalanmış.',correct:true,correctWord:'makine'},
+      {text:'Hastalık grip değil, ağır bir <b>zatüre</b> vakasıydı.',correct:false,wrongWord:'zatüre',correctWord:'zatürre'}
+    ]},
+    {number:13,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuk oyuncağın içinden renkli bir <b>sürpriz</b> çıkınca çok sevindi.',correct:true,correctWord:'sürpriz'},
+      {text:'Annem fırından sıcak <b>sandoviç</b> alıp getirdi.',correct:false,wrongWord:'sandoviç',correctWord:'sandviç'}
+    ]},
+    {number:14,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde denize girmek için güzel bir <b>plaj</b> bulduk.',correct:true,correctWord:'plaj'},
+      {text:'Arabanın motorundan yoğun <b>egsoz</b> dumanı çıkıyordu.',correct:false,wrongWord:'egsoz',correctWord:'egzoz'}
+    ]},
+    {number:15,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Berberden çıkarken saçımı güzel bir <b>tıraş</b> yaptırdım.',correct:true,correctWord:'tıraş'},
+      {text:'Trafik polisi yanlış park eden <b>şöför</b> hakkında ceza yazdı.',correct:false,wrongWord:'şöför',correctWord:'şoför'}
+    ]},
+    {number:16,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bu araştırmada kullanılan yöntem oldukça etkili bir <b>metot</b> olarak biliniyor.',correct:true,correctWord:'metot'},
+      {text:'Çocuk, masanın üzerine boş bir <b>kavonoz</b> koydu.',correct:false,wrongWord:'kavonoz',correctWord:'kavanoz'}
+    ]},
+    {number:17,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Mahallede görevli <b>komiser</b> herkese selam verdi.',correct:true,correctWord:'komiser'},
+      {text:'Onların anlattıkları büyük bir <b>ızdırap</b> kaynağıydı.',correct:false,wrongWord:'ızdırap',correctWord:'ıstırap'}
+    ]},
+    {number:18,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Söylediği şey tam anlamıyla bir <b>espri</b> değildi.',correct:true,correctWord:'espri'},
+      {text:'Yeni kitabın türü tam bir <b>fantazi</b> romanıydı.',correct:false,wrongWord:'fantazi',correctWord:'fantezi'}
+    ]},
+    {number:19,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bilim insanı yaptığı konuşmada önemli bir <b>tespit</b> sundu.',correct:true,correctWord:'tespit'},
+      {text:'Bu yıl konserlerde ünlü bir <b>silahşör</b> gösteri yapacakmış.',correct:false,wrongWord:'silahşör',correctWord:'silahşor'}
+    ]},
+    {number:20,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Antlaşma metinlerinde <b>kapitülasyon</b> maddeleri yer alıyordu.',correct:true,correctWord:'kapitülasyon'},
+      {text:'Çocuk bahçesinde beyaz bir <b>fülüt</b> bulduğunu söyledi.',correct:false,wrongWord:'fülüt',correctWord:'flüt'}
+    ]},
+    {number:21,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Kitapta geçen uzun bir <b>röportaj</b> dikkat çekiciydi.',correct:true,correctWord:'röportaj'},
+      {text:'Projede yer almak için gerekli <b>insiyatif</b>i gösteremedi.',correct:false,wrongWord:'insiyatif',correctWord:'inisiyatif'}
+    ]},
+    {number:22,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Konser alanında oldukça kalabalık bir <b>kolektif</b> topluluk vardı.',correct:true,correctWord:'kolektif'},
+      {text:'Yeni öğretmen öğrencilere faydalı bir <b>klavuz</b> dağıttı.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:23,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde gün batımını izlemek insanı çok <b>mutlu</b> ediyordu.',correct:true,correctWord:'mutlu'},
+      {text:'Bu işte başarı kazanmak için doğru bir <b>haketmek</b> anlayışı gerekir.',correct:false,wrongWord:'haketmek',correctWord:'hakketmek'}
+    ]},
+    {number:24,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Futbolcular antrenman öncesi <b>eşofman</b> giyerek sahaya çıktılar.',correct:true,correctWord:'eşofman'},
+      {text:'Onun sözleri kalbimde derin bir <b>ızdırap</b> bıraktı.',correct:false,wrongWord:'ızdırap',correctWord:'ıstırap'}
+    ]},
+    {number:25,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde sahilde çocuklarla <b>beyzbol</b> oynadık.',correct:true,correctWord:'beyzbol'},
+      {text:'Dün yapılan sınavın soruları çok <b>yalnış</b> hazırlanmıştı.',correct:false,wrongWord:'yalnış',correctWord:'yanlış'}
+    ]},
+    {number:26,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yazarın yeni kitabı gerçekten çok <b>orijinal</b> bir çalışmaydı.',correct:true,correctWord:'orijinal'},
+      {text:'Toplantıda dile getirilen fikirler tamamen <b>pehriz</b> niteliğindeydi.',correct:false,wrongWord:'pehriz',correctWord:'perhiz'}
+    ]},
+    {number:27,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Küçük çocuk mavi renkli bir <b>kibrit</b> kutusu buldu.',correct:true,correctWord:'kibrit'},
+      {text:'Öğrenciler yeni dönemde <b>matba</b> ziyaretine gittiler.',correct:false,wrongWord:'matba',correctWord:'matbaa'}
+    ]},
+    {number:28,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Oyun alanında yere bir <b>kavanoz</b> düşmüş.',correct:true,correctWord:'kavanoz'},
+      {text:'Spor sahasında yapılan <b>antreman</b> çok yorucuydu.',correct:false,wrongWord:'antreman',correctWord:'antrenman'}
+    ]},
+    {number:29,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğrenciler sınavda mantıklı bir <b>metot</b> izledi.',correct:true,correctWord:'metot'},
+      {text:'Çocuğun yazısında bazı <b>pisikoljk</b> ifadeler dikkat çekti.',correct:false,wrongWord:'pisikoljk',correctWord:'psikolojik'}
+    ]},
+    {number:30,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Oyunda sahneye çıkan <b>silahşor</b> çok alkış aldı.',correct:false,wrongWord:'silahşor',correctWord:'silahşör'},
+      {text:'Dün marketten sıcak bir <b>poaça</b> aldık.',correct:false,wrongWord:'poaça',correctWord:'poğaça'}
+    ]},
+    {number:31,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde deniz kenarında güzel bir <b>akşamüstü</b> yürüyüşü yaptık.',correct:true,correctWord:'akşamüstü'},
+      {text:'Çocuk, öğretmenin söylediğini <b>yada</b> yanlış anladı.',correct:false,wrongWord:'yada',correctWord:'ya da'}
+    ]},
+    {number:32,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğretmen toplantıya <b>başvurmak</b> isteyenleri listeye yazdı.',correct:true,correctWord:'başvurmak'},
+      {text:'Arkadaşım sınav için gerekli tüm <b>mataryal</b>leri hazırlamıştı.',correct:false,wrongWord:'mataryal',correctWord:'materyal'}
+    ]},
+    {number:33,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Polisi aradık çünkü olay tam bir <b>suçüstü</b> yakalanmaydı.',correct:true,correctWord:'suçüstü'},
+      {text:'Çocuk gözlerini ovuşturunca <b>kiprik</b>leri acıdı.',correct:false,wrongWord:'kiprik',correctWord:'kirpik'}
+    ]},
+    {number:34,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Onun sözlerinde biraz <b>vurdumduymaz</b> bir tavır vardı.',correct:true,correctWord:'vurdumduymaz'},
+      {text:'Sınav kâğıdında çok sayıda <b>yanlız</b> öğrenci ifadesi geçti.',correct:false,wrongWord:'yanlız',correctWord:'yalnız'}
+    ]},
+    {number:35,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bu tablo oldukça <b>orijinal</b> bir sanat eseri.',correct:true,correctWord:'orijinal'},
+      {text:'Çocuğun yaptığı çizimde <b>kollektif</b> imza vardı.',correct:false,wrongWord:'kollektif',correctWord:'kolektif'}
+    ]},
+    {number:36,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Oyun sırasında güzel bir <b>flüt</b> melodisi duyuldu.',correct:true,correctWord:'flüt'},
+      {text:'Hastalık raporuna göre çocukta <b>zatüre</b> belirtileri vardı.',correct:false,wrongWord:'zatüre',correctWord:'zatürre'}
+    ]},
+    {number:37,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Futbolcular sabah erken saatte <b>antrenman</b> yaptı.',correct:true,correctWord:'antrenman'},
+      {text:'Yeni oyunun sahnesinde büyük bir <b>dinazor</b> maketi vardı.',correct:false,wrongWord:'dinazor',correctWord:'dinozor'}
+    ]},
+    {number:38,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde güzel bir <b>plaj</b> keşfettik.',correct:true,correctWord:'plaj'},
+      {text:'Öğrencinin karnesinde <b>pisikoljk</b> değerlendirme eksikti.',correct:false,wrongWord:'pisikoljk',correctWord:'psikolojik'}
+    ]},
+    {number:39,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bugün çok komik bir <b>espri</b> yaptı.',correct:true,correctWord:'espri'},
+      {text:'Arabanın egzozundan çıkan <b>eksoz</b> dumanı etrafı sardı.',correct:false,wrongWord:'eksoz',correctWord:'egzoz'}
+    ]},
+    {number:40,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çalışmada yapılan doğru bir <b>tespit</b> vardı.',correct:true,correctWord:'tespit'},
+      {text:'Öğretmen bize yeni bir <b>ropörtaj</b> ödevi verdi.',correct:false,wrongWord:'ropörtaj',correctWord:'röportaj'}
+    ]},
+    {number:41,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bu düşünce oldukça <b>entelektüel</b> bir bakış açısıydı.',correct:true,correctWord:'entelektüel'},
+      {text:'Çocuk bahçede eğlenceli bir <b>beysbol</b> maçı yaptıklarını anlattı.',correct:false,wrongWord:'beysbol',correctWord:'beyzbol'}
+    ]},
+    {number:42,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Hastalıkla mücadelede doğru <b>perhiz</b> uygulamak önemlidir.',correct:true,correctWord:'perhiz'},
+      {text:'Tatilde pazardan sıcak bir <b>poaça</b> aldım.',correct:false,wrongWord:'poaça',correctWord:'poğaça'}
+    ]},
+    {number:43,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çalışkan öğrenci doğru <b>inisiyatif</b> almayı bildi.',correct:true,correctWord:'inisiyatif'},
+      {text:'Köşe yazısında komik bir <b>espiri</b> vardı.',correct:false,wrongWord:'espiri',correctWord:'espri'}
+    ]},
+    {number:44,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Köyde yeni açılan <b>matbaa</b> dikkat çekti.',correct:true,correctWord:'matbaa'},
+      {text:'Tatilde sahilde güzel bir <b>pilaj</b> gördük.',correct:false,wrongWord:'pilaj',correctWord:'plaj'}
+    ]},
+    {number:45,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tarih öğretmeni konuyu <b>kapitülasyon</b> maddeleriyle anlattı.',correct:true,correctWord:'kapitülasyon'},
+      {text:'Çocuğun defterinde yanlış bir <b>yalnış</b> yazı vardı.',correct:false,wrongWord:'yalnış',correctWord:'yanlış'}
+    ]},
+    {number:46,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bugün derste çok önemli bir <b>metot</b> öğrendik.',correct:true,correctWord:'metot'},
+      {text:'Mahalleye yeni gelen <b>komser</b> herkesi selamladı.',correct:false,wrongWord:'komser',correctWord:'komiser'}
+    ]},
+    {number:47,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuğun odasında boş bir <b>kavanoz</b> vardı.',correct:true,correctWord:'kavanoz'},
+      {text:'Tatilde gördüğümüz manzara tam bir <b>fantazi</b>ydi.',correct:false,wrongWord:'fantazi',correctWord:'fantezi'}
+    ]},
+    {number:48,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğretmen öğrencilere doğru bir <b>kılavuz</b> verdi.',correct:true,correctWord:'kılavuz'},
+      {text:'Kardeşim okulda çok eğlenceli bir <b>kollektif</b> proje sundu.',correct:false,wrongWord:'kollektif',correctWord:'kolektif'}
+    ]},
+    {number:49,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bu tablo gerçekten çok <b>orijinal</b> bir sanat eseriydi.',correct:true,correctWord:'orijinal'},
+      {text:'Çocuk oyunda sahneye çıkan <b>silahşör</b>ü çok sevdi.',correct:false,wrongWord:'silahşör',correctWord:'silahşor'}
+    ]},
+    {number:50,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Hastalığın adı aslında <b>zatürre</b> olarak bilinir.',correct:true,correctWord:'zatürre'},
+      {text:'Çocuk oyuncağın içinden güzel bir <b>süpriz</b> çıkardı.',correct:false,wrongWord:'süpriz',correctWord:'sürpriz'}
+    ]},
+    {number:51,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuğun gözünde uzun bir <b>kirpik</b> vardı.',correct:true,correctWord:'kirpik'},
+      {text:'Oyunda öğrenciler yanlış bir <b>pehriz</b> örneği verdiler.',correct:false,wrongWord:'pehriz',correctWord:'perhiz'}
+    ]},
+    {number:52,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sporcular sabah erken saatte <b>antrenman</b> yaptı.',correct:true,correctWord:'antrenman'},
+      {text:'Çocuk defterine yanlışlıkla <b>pisikoljk</b> kelimesini yazdı.',correct:false,wrongWord:'pisikoljk',correctWord:'psikolojik'}
+    ]},
+    {number:53,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yeni çıkan dergide uzun bir <b>röportaj</b> yayımlandı.',correct:true,correctWord:'röportaj'},
+      {text:'Öğrenci sınavda <b>ropörtaj</b> kelimesini yanlış kullandı.',correct:false,wrongWord:'ropörtaj',correctWord:'röportaj'}
+    ]},
+    {number:54,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde güzel bir <b>plaj</b> keşfettik.',correct:true,correctWord:'plaj'},
+      {text:'Bu kış arabadan çıkan yoğun <b>eksoz</b> dumanı herkesi rahatsız etti.',correct:false,wrongWord:'eksoz',correctWord:'egzoz'}
+    ]},
+    {number:55,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çalışmada yapılan önemli bir <b>tespit</b> vardı.',correct:true,correctWord:'tespit'},
+      {text:'Tarih kitabında kocaman bir <b>dinazor</b> resmi basılmıştı.',correct:false,wrongWord:'dinazor',correctWord:'dinozor'}
+    ]},
+    {number:56,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yazarın üslubu gerçekten <b>entelektüel</b> bir birikim içeriyor.',correct:true,correctWord:'entelektüel'},
+      {text:'Çocuğun yazısında <b>klavuz</b> kelimesi sıkça geçiyordu.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:57,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğretmen sınıfta çok faydalı bir <b>kılavuz</b> dağıttı.',correct:true,correctWord:'kılavuz'},
+      {text:'Sporcular yanlış <b>eşortman</b> giymişlerdi.',correct:false,wrongWord:'eşortman',correctWord:'eşofman'}
+    ]},
+    {number:58,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Komutan gerekli belgeleri <b>başvurmak</b> isteyenlere verdi.',correct:true,correctWord:'başvurmak'},
+      {text:'Öğrencinin sınav kâğıdında <b>yalnış</b> ifadeler vardı.',correct:false,wrongWord:'yalnış',correctWord:'yanlış'}
+    ]},
+    {number:59,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuğun yaptığı espri oldukça <b>komik</b> bulundu.',correct:true,correctWord:'komik'},
+      {text:'Kitapta yer alan hikâye tam bir <b>fantazi</b> ürünüydü.',correct:false,wrongWord:'fantazi',correctWord:'fantezi'}
+    ]},
+    {number:60,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Antik eserler üzerine çok önemli bir <b>tespit</b> yapıldı.',correct:true,correctWord:'tespit'},
+      {text:'Çocuk kahvaltıda sıcak bir <b>poaça</b> yediğini söyledi.',correct:false,wrongWord:'poaça',correctWord:'poğaça'}
+    ]},
+    {number:61,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuk sabah derste yeni bir <b>metot</b> öğrendi.',correct:true,correctWord:'metot'},
+      {text:'Arabanın motorundan siyah <b>egsoz</b> dumanı çıktı.',correct:false,wrongWord:'egsoz',correctWord:'egzoz'}
+    ]},
+    {number:62,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yaz tatilinde her sabah sahile gidip <b>plaj</b>da yüzdük.',correct:true,correctWord:'plaj'},
+      {text:'Öğrenciler yanlışlıkla <b>antreman</b> kelimesini deftere yazdı.',correct:false,wrongWord:'antreman',correctWord:'antrenman'}
+    ]},
+    {number:63,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tarih öğretmeni <b>kapitülasyon</b> konusunu detaylı anlattı.',correct:true,correctWord:'kapitülasyon'},
+      {text:'Çocuk kitapta <b>poaça</b> kelimesini görüp güldü.',correct:false,wrongWord:'poaça',correctWord:'poğaça'}
+    ]},
+    {number:64,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Gazetede uzun bir <b>röportaj</b> yayımlandı.',correct:true,correctWord:'röportaj'},
+      {text:'Defterin kenarında <b>haketmek</b> kelimesi yanlış yazılmıştı.',correct:false,wrongWord:'haketmek',correctWord:'hakk etmek'}
+    ]},
+    {number:65,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sporcular sabah erkenden <b>antrenman</b> için sahaya çıktılar.',correct:true,correctWord:'antrenman'},
+      {text:'Öğrencinin yazısında <b>kollektif</b> sözcüğü yanlış yazılmıştı.',correct:false,wrongWord:'kollektif',correctWord:'kolektif'}
+    ]},
+    {number:66,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde güzel bir <b>karnabahar</b> yemeği yaptık.',correct:true,correctWord:'karnabahar'},
+      {text:'Çocuk defterine <b>mataryal</b> kelimesini yazmış.',correct:false,wrongWord:'mataryal',correctWord:'materyal'}
+    ]},
+    {number:67,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuğun gözünde uzun bir <b>kirpik</b> vardı.',correct:true,correctWord:'kirpik'},
+      {text:'Kitapta yanlış bir <b>espiri</b> yazımı göze çarpıyordu.',correct:false,wrongWord:'espiri',correctWord:'espri'}
+    ]},
+    {number:68,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğretmen derste yeni bir <b>kılavuz</b> kitap tanıttı.',correct:true,correctWord:'kılavuz'},
+      {text:'Çocuk bahçede eski bir <b>deynek</b> buldu.',correct:false,wrongWord:'deynek',correctWord:'değnek'}
+    ]},
+    {number:69,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tarih dersinde <b>orijinal</b> belgelerden bahsedildi.',correct:true,correctWord:'orijinal'},
+      {text:'Çocuk hastalığa yakalanınca <b>zatüre</b> teşhisi kondu.',correct:false,wrongWord:'zatüre',correctWord:'zatürre'}
+    ]},
+    {number:70,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Babası onunla ilgili doğru bir <b>tespit</b> yaptı.',correct:true,correctWord:'tespit'},
+      {text:'Öğrenciler sınıfta <b>klavuz</b> kitabı incelediler.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:71,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sabah toplantısında önemli bir <b>tespit</b> yapıldı.',correct:true,correctWord:'tespit'},
+      {text:'Çocuğun yazısında <b>ropörtaj</b> kelimesi yanlış geçiyordu.',correct:false,wrongWord:'ropörtaj',correctWord:'röportaj'}
+    ]},
+    {number:72,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde çocuklarla birlikte sahilde <b>beyzbol</b> oynadık.',correct:true,correctWord:'beyzbol'},
+      {text:'Öğrencinin defterinde <b>yalnış</b> kelimesi dikkat çekti.',correct:false,wrongWord:'yalnış',correctWord:'yanlış'}
+    ]},
+    {number:73,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sporcular yaz boyunca sıkı <b>antrenman</b> yaptı.',correct:true,correctWord:'antrenman'},
+      {text:'Çocuğun yazısında <b>pisikoljk</b> ifadeler vardı.',correct:false,wrongWord:'pisikoljk',correctWord:'psikolojik'}
+    ]},
+    {number:74,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğrenci proje için gerekli <b>matbaa</b> kaynaklarını araştırdı.',correct:true,correctWord:'matbaa'},
+      {text:'Çocuk sınıfta yeni <b>espiri</b>ler yaparak dikkat çekti.',correct:false,wrongWord:'espiri',correctWord:'espri'}
+    ]},
+    {number:75,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bu tablo gerçekten çok <b>orijinal</b> bir eserdi.',correct:true,correctWord:'orijinal'},
+      {text:'Çocuğun defterinde yanlış yazılmış bir <b>entellektüel</b> sözcüğü vardı.',correct:false,wrongWord:'entellektüel',correctWord:'entelektüel'}
+    ]},
+    {number:76,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yeni alınan araba sık sık <b>egzoz</b> dumanı çıkarıyordu.',correct:true,correctWord:'egzoz'},
+      {text:'Çocuk öğretmenine yanlış bir <b>klavuz</b> sundu.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:77,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tarih dersinde Osmanlı’daki <b>kapitülasyon</b> konusuna değinildi.',correct:true,correctWord:'kapitülasyon'},
+      {text:'Sınavda bazı sorular tamamen <b>haketmek</b> üzerineydi.',correct:false,wrongWord:'haketmek',correctWord:'hakk etmek'}
+    ]},
+    {number:78,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğrenciler derste güzel bir <b>flüt</b> dinletisi sundu.',correct:true,correctWord:'flüt'},
+      {text:'Kitapta hayali bir <b>dinazor</b> resmi vardı.',correct:false,wrongWord:'dinazor',correctWord:'dinozor'}
+    ]},
+    {number:79,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuk kahvaltıda sıcak bir <b>poğaça</b> yedi.',correct:true,correctWord:'poğaça'},
+      {text:'Öğrencinin defterinde <b>pehriz</b> kelimesi yanlış kullanılmıştı.',correct:false,wrongWord:'pehriz',correctWord:'perhiz'}
+    ]},
+    {number:80,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Konferans sonunda bilim insanı önemli bir <b>tespit</b> yaptı.',correct:true,correctWord:'tespit'},
+      {text:'Çocuğun yazısında <b>kollektif</b> kelimesi sıkça geçiyordu.',correct:false,wrongWord:'kollektif',correctWord:'kolektif'}
+    ]},
+    {number:81,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sporcular yaz boyunca sıkı <b>antrenman</b> yaptı.',correct:true,correctWord:'antrenman'},
+      {text:'Çocuğun defterinde yanlış yazılmış <b>antreman</b> sözcüğü vardı.',correct:false,wrongWord:'antreman',correctWord:'antrenman'}
+    ]},
+    {number:82,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde denize girmek için en güzel <b>plaj</b>ı seçtik.',correct:true,correctWord:'plaj'},
+      {text:'Çocuğun yazısında <b>poaça</b> kelimesi yanlış geçti.',correct:false,wrongWord:'poaça',correctWord:'poğaça'}
+    ]},
+    {number:83,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tarih dersinde uzun uzun <b>kapitülasyon</b> konusunu işledik.',correct:true,correctWord:'kapitülasyon'},
+      {text:'Çocuk tahtaya <b>deynek</b> ile vurdu.',correct:false,wrongWord:'deynek',correctWord:'değnek'}
+    ]},
+    {number:84,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bilim insanı deney sonunda önemli bir <b>tespit</b> yaptı.',correct:true,correctWord:'tespit'},
+      {text:'Gazetede ünlü bir sanatçıyla yapılan <b>ropörtaj</b> yayımlandı.',correct:false,wrongWord:'ropörtaj',correctWord:'röportaj'}
+    ]},
+    {number:85,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde çocuklarla sahilde <b>beyzbol</b> oynadık.',correct:true,correctWord:'beyzbol'},
+      {text:'Öğrenci defterinde yanlış yazılmış <b>pisikoljk</b> ifadeler vardı.',correct:false,wrongWord:'pisikoljk',correctWord:'psikolojik'}
+    ]},
+    {number:86,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yeni çıkan kitap oldukça <b>orijinal</b> fikirler içeriyor.',correct:true,correctWord:'orijinal'},
+      {text:'Çocuğun yazısında <b>entellektüel</b> kelimesi yanlış geçti.',correct:false,wrongWord:'entellektüel',correctWord:'entelektüel'}
+    ]},
+    {number:87,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuk kahvaltıda sıcak bir <b>poğaça</b> yedi.',correct:true,correctWord:'poğaça'},
+      {text:'Öğretmenin notlarında <b>klavuz</b> sözcüğü vardı.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:88,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çalışmada farklı bir <b>metot</b> kullanıldı.',correct:true,correctWord:'metot'},
+      {text:'Arabanın motorundan çıkan <b>eksoz</b> herkesi rahatsız etti.',correct:false,wrongWord:'eksoz',correctWord:'egzoz'}
+    ]},
+    {number:89,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuğun gözünde uzun bir <b>kirpik</b> vardı.',correct:true,correctWord:'kirpik'},
+      {text:'Sınav kâğıdında <b>yalnış</b> cevaplar dikkat çekti.',correct:false,wrongWord:'yalnış',correctWord:'yanlış'}
+    ]},
+    {number:90,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Gazetede sanatçıyla yapılan ilginç bir <b>röportaj</b> okudum.',correct:true,correctWord:'röportaj'},
+      {text:'Çocuğun yazısında <b>haketmek</b> kelimesi yanlış geçiyordu.',correct:false,wrongWord:'haketmek',correctWord:'hakk etmek'}
+    ]},
+    {number:91,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Sporcular sabah erken saatlerde <b>antrenman</b> yaptı.',correct:true,correctWord:'antrenman'},
+      {text:'Öğrencinin defterinde yanlış bir <b>mataryal</b> kelimesi yazıyordu.',correct:false,wrongWord:'mataryal',correctWord:'materyal'}
+    ]},
+    {number:92,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde denize girmek için güzel bir <b>plaj</b> bulduk.',correct:true,correctWord:'plaj'},
+      {text:'Çocuğun yazısında <b>poaça</b> kelimesi yer alıyordu.',correct:false,wrongWord:'poaça',correctWord:'poğaça'}
+    ]},
+    {number:93,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tarih dersinde Osmanlı’daki <b>kapitülasyon</b>lardan bahsedildi.',correct:true,correctWord:'kapitülasyon'},
+      {text:'Çocuk tahtaya kalın bir <b>deynek</b> ile vurdu.',correct:false,wrongWord:'deynek',correctWord:'değnek'}
+    ]},
+    {number:94,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Öğretmen konuşmasında önemli bir <b>tespit</b> yaptı.',correct:true,correctWord:'tespit'},
+      {text:'Gazetede bir sanatçıyla yapılan <b>ropörtaj</b> yer aldı.',correct:false,wrongWord:'ropörtaj',correctWord:'röportaj'}
+    ]},
+    {number:95,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Tatilde sahilde çocuklarla <b>beyzbol</b> oynadık.',correct:true,correctWord:'beyzbol'},
+      {text:'Çocuğun ödevinde <b>pisikoljk</b> hatalar göze çarptı.',correct:false,wrongWord:'pisikoljk',correctWord:'psikolojik'}
+    ]},
+    {number:96,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Yeni çıkan kitap oldukça <b>orijinal</b> fikirler içeriyor.',correct:true,correctWord:'orijinal'},
+      {text:'Öğrencinin yazısında <b>entellektüel</b> kelimesi geçiyordu.',correct:false,wrongWord:'entellektüel',correctWord:'entelektüel'}
+    ]},
+    {number:97,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuk kahvaltıda sıcacık bir <b>poğaça</b> yedi.',correct:true,correctWord:'poğaça'},
+      {text:'Öğretmenin listesinde yanlış bir <b>klavuz</b> yer alıyordu.',correct:false,wrongWord:'klavuz',correctWord:'kılavuz'}
+    ]},
+    {number:98,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Bilim insanı deney sonunda yeni bir <b>metot</b> geliştirdi.',correct:true,correctWord:'metot'},
+      {text:'Arabanın motorundan çıkan yoğun <b>eksoz</b> dumanı herkesi rahatsız etti.',correct:false,wrongWord:'eksoz',correctWord:'egzoz'}
+    ]},
+    {number:99,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Çocuğun gözünde uzun bir <b>kirpik</b> vardı.',correct:true,correctWord:'kirpik'},
+      {text:'Yazısında birkaç tane <b>yalnış</b> cevap bulunuyordu.',correct:false,wrongWord:'yalnış',correctWord:'yanlış'}
+    ]},
+    {number:100,text:"HANGİSİ DOĞRU / YANLIŞ?",options:[
+      {text:'Gazetede ünlü bir yazarla yapılan ilginç bir <b>röportaj</b> yayımlandı.',correct:true,correctWord:'röportaj'},
+      {text:'Öğrencinin defterinde <b>haketmek</b> kelimesi yer aldı.',correct:false,wrongWord:'haketmek',correctWord:'hakk etmek'}
+    ]}
+  ];
+
+  const container = document.getElementById('quiz-container');
+
+  function capitalizeFirstLetter(string) {
+    if (!string) return '';
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function createQuestionHTML(q) {
+    const div = document.createElement('div');
+    div.className = 'question';
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = `${q.number}. ${q.text}`;
+    div.appendChild(h3);
+
+    q.options.forEach((opt, idx) => {
+      const optDiv = document.createElement('div');
+      optDiv.className = 'option';
+      optDiv.innerHTML = opt.text;
+      optDiv.dataset.correct = opt.correct;
+      optDiv.dataset.wrongWord = opt.wrongWord || '';
+      optDiv.dataset.correctWord = opt.correctWord || '';
+      optDiv.dataset.feedbackShown = 'false';
+      optDiv.onclick = () => toggleFeedback(optDiv);
+      div.appendChild(optDiv);
+
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'feedback';
+      feedbackDiv.style.display = 'none';
+      div.appendChild(feedbackDiv);
+    });
+
+    return div;
+  }
+
+  function toggleFeedback(optionElement) {
+    const questionDiv = optionElement.parentElement;
+    const feedbackDivs = questionDiv.querySelectorAll('.feedback');
+    const options = questionDiv.querySelectorAll('.option');
+
+    let index = Array.from(options).indexOf(optionElement);
+    let feedbackDiv = feedbackDivs[index];
+
+    if (feedbackDiv.style.display === 'block') {
+      feedbackDiv.style.display = 'none';
+      optionElement.dataset.feedbackShown = 'false';
+      return;
+    }
+
+    // Hide all other feedbacks in this question
+    feedbackDivs.forEach(fd => fd.style.display = 'none');
+    options.forEach(opt => opt.dataset.feedbackShown = 'false');
+
+    feedbackDiv.style.display = 'block';
+    optionElement.dataset.feedbackShown = 'true';
+
+    if (optionElement.dataset.correct === 'true') {
+      feedbackDiv.className = 'feedback correct-feedback';
+      feedbackDiv.innerHTML = `DOĞRU<br><span class="explanation">"${capitalizeFirstLetter(optionElement.dataset.correctWord)}" kelimesinin yazımı doğrudur.</span>`;
+    } else {
+      feedbackDiv.className = 'feedback incorrect-feedback';
+      feedbackDiv.innerHTML = `YANLIŞ<br><span class="explanation">"<span class="incorrect-word">${optionElement.dataset.wrongWord.toUpperCase()}</span>" kelimesinin yazımı yanlış <span class="correct-word">${optionElement.dataset.correctWord.toUpperCase()}</span> şeklinde yazılmalıdır.</span>`;
+    }
+  }
+
+  questions.forEach(q => {
+    container.appendChild(createQuestionHTML(q));
+  });
+</script>
+
+</body>
+</html>

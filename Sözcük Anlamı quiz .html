@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Çoklu Quiz – Fiil Anlamları</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;line-height:1.6;padding:20px;max-width:960px;margin:auto}
+  h1{margin:0 0 15px}
+  .menu{margin-bottom:20px}
+  select{padding:10px;font-size:16px}
+  .item{border:1px solid #ddd;border-radius:10px;margin:12px 0;overflow:hidden}
+  .qhead{padding:12px 14px;background:#f1f5f9;cursor:pointer;display:flex;gap:10px;align-items:flex-start; font-weight:bold}
+  .num{min-width:28px;font-weight:700;color:#2563eb}
+  .meaning{flex:1;font-weight:bold}
+  .choices{display:none;padding:12px 16px;border-top:1px solid #ddd;background:#fff}
+  .choice{margin:8px 0;padding:14px 12px;border-radius:10px;border:1px solid #ccc;cursor:pointer;font-size:18px}
+  .choice:hover{background:#f5f7fb}
+  .true{color:#15803d;border-color:#86efac;background:#ecfdf5}
+  .false{color:#b91c1c;border-color:#fecaca;background:#fff1f2}
+  .reveal{color:#b45309;border-color:#facc15;background:#fffbeb}
+  .reveal::after{content:"  – doğru cevap";font-weight:700;color:#b45309}
+  .stats{margin:20px 0;font-weight:bold}
+  button{padding:12px 18px;margin:10px 5px;font-size:18px;border:none;border-radius:8px;cursor:pointer}
+  .retry{background:#2563eb;color:#fff}
+  .retry:hover{background:#1e3a8a}
+</style>
+</head>
+<body>
+<h1>Çoklu Quiz – Fiil Anlamları</h1>
+
+<div class="menu">
+  <label>Kelime seç: </label>
+  <select id="wordSelect">
+    <option value="">-- seçiniz --</option>
+    <option value="bulmak">Bulmak</option>
+    <option value="surmek">Sürmek</option>
+    <option value="aramak">Aramak</option>
+    <option value="anlama">Anlama</option>
+    <option value="silmek">Silmek</option>
+    <option value="yazmak">Yazmak</option>
+    <option value="donmek">Dönmek</option>
+    <option value="cevirme">Çevirmek</option>
+    <option value="gelmek">Gelmek</option>
+  </select>
+</div>
+
+<div id="stats" class="stats"></div>
+<div id="quiz"></div>
+<div id="retryBox"></div>
+
+<script>
+const DATASETS = {
+  bulmak: [
+    {m:"Arayarak veya aramadan bir şeyle, bir kimseyle karşılaşmak.",ex:"Parkta dolaşırken eski bir arkadaşımı buldum"},
+    {m:"Bir şeyi elde etmek.",ex:"Aylarca uğraşıp sonunda iyi bir iş buldu"},
+    {m:"Kaybedilen bir şeyi yeniden ele geçirmek.",ex:"Düştüğünü sandığı yüzüğü çekmecede buldu"},
+    {m:"Varlığı bilinmeyen bir şeyi ortaya çıkarmak, keşfetmek.",ex:"Arkeologlar yeni bir tablet buldu"},
+    {m:"İlk kez yeni bir şey yaratmak, icat etmek.",ex:"Bilim insanı pratik bir çözüm buldu"},
+    {m:"İstenilen şeye kavuşmak, nail olmak.",ex:"Yıllar sonra aradığı huzuru buldu"},
+    {m:"Bir yere, bir noktaya erişmek, ulaşmak.",ex:"Uzun arayıştan sonra doğru adresi bulduk"},
+    {m:"Herhangi bir görüşe, bir yargıya varmak.",ex:"Bu öneriyi mantıklı buluyorum"},
+    {m:"Seçmek.",ex:"Takıma en uygun kaleciyi buldular"},
+    {m:"Sağlamak, temin etmek.",ex:"Toplantı için uygun bir saat bulacağız"},
+  ],
+  // Buraya diğer kelimelerin anlamlarını da aynı formatta eklersin (surmek, aramak, anlama, silmek, yazmak, donmek, cevirme, gelmek)
+};
+
+let currentData = [];
+let correct = 0, wrong = 0, wrongItems = [];
+
+function shuffled(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function loadQuiz(word){
+  const quiz=document.getElementById("quiz");
+  quiz.innerHTML="";
+  document.getElementById("retryBox").innerHTML="";
+  correct=0;wrong=0;wrongItems=[];
+  currentData = DATASETS[word];
+  const optionLabels = ['a)', 'b)', 'c)'];
+  currentData.forEach((item,idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="item";
+    const head=document.createElement("div");
+    head.className="qhead";
+    head.textContent=(idx+1)+". "+item.m;
+    head.onclick=()=>choices.style.display=choices.style.display==="block"?"none":"block";
+    const choices=document.createElement("div");
+    choices.className="choices";
+
+    const others=currentData.filter((_,i)=>i!==idx);
+    const picks=shuffled(others).slice(0,2).map(p=>p.ex);
+    const options=shuffled([item.ex,...picks]);
+
+    options.forEach((opt,i)=>{
+      const ch=document.createElement("div");
+      ch.className="choice";
+      ch.textContent=optionLabels[i]+" "+opt;
+      ch.onclick=()=>{
+        if(choices.dataset.locked==="1") return;
+        if(opt===item.ex){
+          ch.classList.add("true");
+          correct++;
+        }else{
+          ch.classList.add("false");
+          wrong++;
+          wrongItems.push(item);
+          setTimeout(()=>{
+            const kids=[...choices.querySelectorAll(".choice")];
+            const correctEl=kids.find(el=>el.textContent.endsWith(item.ex));
+            if(correctEl) correctEl.classList.add("reveal");
+          },500);
+        }
+        choices.dataset.locked="1";
+        updateStats();
+      };
+      choices.appendChild(ch);
+    });
+
+    wrap.appendChild(head);
+    wrap.appendChild(choices);
+    quiz.appendChild(wrap);
+  });
+  updateStats();
+}
+
+function updateStats(){
+  const total=correct+wrong;
+  const perc=total?Math.round(correct*100/total):0;
+  document.getElementById("stats").textContent=`Doğru: ${correct}  Yanlış: ${wrong}  Başarı: %${perc}`;
+  if(total===currentData.length){
+    const retryBox=document.getElementById("retryBox");
+    if(wrongItems.length>0){
+      const btn=document.createElement("button");
+      btn.className="retry";
+      btn.textContent="Yanlışları tekrar çöz";
+      btn.onclick=()=>{
+        currentData=wrongItems;
+        correct=0;wrong=0;wrongItems=[];
+        loadRetry();
+      };
+      retryBox.appendChild(btn);
+    }
+  }
+}
+
+function loadRetry(){
+  const quiz=document.getElementById("quiz");
+  quiz.innerHTML="";
+  document.getElementById("retryBox").innerHTML="";
+  const optionLabels = ['a)', 'b)', 'c)'];
+  currentData.forEach((item,idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="item";
+    const head=document.createElement("div");
+    head.className="qhead";
+    head.textContent=(idx+1)+". "+item.m;
+    head.onclick=()=>choices.style.display=choices.style.display==="block"?"none":"block";
+    const choices=document.createElement("div");
+    choices.className="choices";
+    const others=currentData.filter((_,i)=>i!==idx);
+    const picks=shuffled(others).slice(0,2).map(p=>p.ex);
+    const options=shuffled([item.ex,...picks]);
+    options.forEach((opt,i)=>{
+      const ch=document.createElement("div");
+      ch.className="choice";
+      ch.textContent=optionLabels[i]+" "+opt;
+      ch.onclick=()=>{
+        if(choices.dataset.locked==="1") return;
+        if(opt===item.ex){ch.classList.add("true");correct++;}
+        else{ch.classList.add("false");wrong++;}
+        choices.dataset.locked="1";
+        updateStats();
+      };
+      choices.appendChild(ch);
+    });
+    wrap.appendChild(head);
+    wrap.appendChild(choices);
+    quiz.appendChild(wrap);
+  });
+  updateStats();
+}
+
+document.getElementById("wordSelect").onchange=e=>{
+  if(e.target.value) loadQuiz(e.target.value);
+};
+</script>
+</body>
+</html>
