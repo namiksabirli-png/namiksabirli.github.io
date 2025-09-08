@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Çoklu Quiz – Fiil Anlamları</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;line-height:1.6;padding:20px;max-width:960px;margin:auto}
+  h1{margin:0 0 15px}
+  .menu{margin-bottom:20px}
+  select{padding:10px;font-size:16px}
+  .item{border:1px solid #ddd;border-radius:10px;margin:12px 0;overflow:hidden}
+  .qhead{padding:12px 14px;background:#f1f5f9;cursor:pointer;display:flex;gap:10px;align-items:flex-start; font-weight:bold}
+  .num{min-width:28px;font-weight:700;color:#2563eb}
+  .meaning{flex:1;font-weight:bold}
+  .choices{display:none;padding:12px 16px;border-top:1px solid #ddd;background:#fff}
+  .choice{margin:8px 0;padding:14px 12px;border-radius:10px;border:1px solid #ccc;cursor:pointer;font-size:18px}
+  .choice:hover{background:#f5f7fb}
+  .true{color:#15803d;border-color:#86efac;background:#ecfdf5}
+  .false{color:#b91c1c;border-color:#fecaca;background:#fff1f2}
+  .reveal{color:#b45309;border-color:#facc15;background:#fffbeb}
+  .reveal::after{content:"  – doğru cevap";font-weight:700;color:#b45309}
+  .stats{margin:20px 0;font-weight:bold}
+  button{padding:12px 18px;margin:10px 5px;font-size:18px;border:none;border-radius:8px;cursor:pointer}
+  .retry{background:#2563eb;color:#fff}
+  .retry:hover{background:#1e3a8a}
+</style>
+</head>
+<body>
+<h1>Çoklu Quiz – Fiil Anlamları</h1>
+
+<div class="menu">
+  <label>Kelime seç: </label>
+  <select id="wordSelect">
+    <option value="">-- seçiniz --</option>
+    <option value="bulmak">Bulmak</option>
+    <option value="surmek">Sürmek</option>
+    <option value="aramak">Aramak</option>
+    <option value="silmek">Silmek</option>
+    <option value="yazmak">Yazmak</option>
+    <option value="donmek">Dönmek</option>
+    <option value="cevirme">Çevirmek</option>
+    <option value="gelmek">Gelmek</option>
+  </select>
+</div>
+
+<div id="stats" class="stats"></div>
+<div id="quiz"></div>
+<div id="retryBox"></div>
+
+<script>
+const DATASETS = {
+  bulmak: [
+    {m:"Arayarak veya aramadan bir şeyle karşılaşmak.",ex:"Yolda yürürken yerde bir anahtar buldum."},
+    {m:"Bir şeyi elde etmek.",ex:"Uzun uğraşlar sonunda istediği işi buldu."},
+    {m:"Kaybedilen bir şeyi yeniden ele geçirmek.",ex:"Kayıp cüzdanını sonunda bulabildi."},
+    {m:"Varlığı bilinmeyen bir şeyi ortaya çıkarmak, keşfetmek.",ex:"Arkeologlar yeni bir antik şehir buldular."},
+    {m:"İlk kez yeni bir şey yaratmak, icat etmek.",ex:"Edison ampulü buldu."},
+    {m:"İstenilen şeye kavuşmak.",ex:"Yıllarca aradığı huzuru sonunda buldu."},
+    {m:"Herhangi bir görüşe, bir yargıya varmak.",ex:"Onun davranışlarını çok kaba buluyorum."}
+  ],
+  surmek: [
+    {m:"Yönetip yürütmek, idare etmek.",ex:"Kaptan gemiyi büyük ustalıkla sürdü."},
+    {m:"Devam etmek.",ex:"Yağmur iki gün boyunca sürdü."},
+    {m:"Önüne katıp götürmek.",ex:"Çoban koyunları yaylaya sürdü."},
+    {m:"Uzatmak, ileri doğru itmek.",ex:"Masayı biraz daha ileriye sürdü."},
+    {m:"Dokundurmak, değdirmek.",ex:"Camı temizlemek için bezi yüzeye sürdü."},
+    {m:"Bir maddeyi ince tabaka halinde yaymak.",ex:"Ekmek üzerine tereyağı sürdü."},
+    {m:"Bulunduğu yerden zorla başka yere göndermek (sürgün etmek).",ex:"Suçlular uzak bir adaya sürüldü."}
+  ],
+  aramak: [
+    {m:"Birini veya bir şeyi bulmaya çalışmak.",ex:"Telefonunu sabahtan beri arıyorum."},
+    {m:"Araştırmak, yoklamak.",ex:"Polis kaybolan çocuğu arıyor."},
+    {m:"Ziyarete, hatır sormaya gitmek.",ex:"Hasta komşumuzu aradık."},
+    {m:"Özlemek, yokluğunu hissetmek.",ex:"Eski günleri çok arıyorum."},
+    {m:"Önem verip istemek.",ex:"Bu işte disiplin aranıyor."},
+    {m:"Bir kişiyle görüşmek için telefon etmek.",ex:"Dostunu hemen aradı."}
+  ],
+  silmek: [
+    {m:"Islaklığı gidererek kuru duruma getirmek.",ex:"Yağmurdan ıslanan masayı bezle sildi."},
+    {m:"Tozunu veya kirini almak.",ex:"Annesi aynayı güzelce sildi."},
+    {m:"Yazı ya da çizgiyi yok etmek.",ex:"Yanlış yazdığı kelimeyi hemen sildi."},
+    {m:"Üstünü çizerek atmak.",ex:"Listeden ismini sildi."},
+    {m:"Mecaz: ilişkisini kesmek, yok saymak.",ex:"Kendisini üzen kişiyi hayatından sildi."}
+  ],
+  yazmak: [
+    {m:"Söz ve düşünceyi harflerle anlatmak.",ex:"Çocuk adını yazmayı öğrendi."},
+    {m:"Yazıya dökmek.",ex:"Günlük tutmak için deftere yazdı."},
+    {m:"Yazar olarak eser vermek.",ex:"O, roman yazan bir sanatçıdır."},
+    {m:"Bildirmek, haber vermek.",ex:"Arkadaşına mektup yazdı."},
+    {m:"Bilgi kaydetmek.",ex:"Bilgisayara şifreyi yazdı."}
+  ],
+  donmek: [
+    {m:"Kendi ekseni etrafında hareket etmek.",ex:"Dünya sürekli dönüyor."},
+    {m:"Geri gelmek.",ex:"Tatilden dün döndüm."},
+    {m:"Yön değiştirmek.",ex:"Sağa döndü."},
+    {m:"Durumdan duruma geçmek.",ex:"Kavga şakaya döndü."},
+    {m:"Bir şeye benzemek.",ex:"Sohbet tartışmaya döndü."}
+  ],
+  cevirme: [
+    {m:"Bir şeyin yönünü değiştirmek.",ex:"Sandalyeyi pencereye çevirdi."},
+    {m:"Öteki yüzünü görünür yapmak.",ex:"Sayfayı çevirdi."},
+    {m:"Bir şeyi döndürmek.",ex:"Anahtarı kilitte çevirdi."},
+    {m:"Çeviri yapmak.",ex:"Romanı Türkçeye çevirdi."},
+    {m:"Bir yerin çevresini kuşatmak.",ex:"Ordu kaleyi çevirdi."},
+    {m:"Bir şeyi başka bir duruma dönüştürmek.",ex:"Atıkları gübreye çevirdiler."}
+  ],
+  gelmek: [
+    {m:"Bir yere ulaşmak, varmak.",ex:"Otobüs durağa geldi."},
+    {m:"Yaklaşmak.",ex:"Bahar geldi."},
+    {m:"Başına gelmek, maruz kalmak.",ex:"Böyle bir olay başına geldi."},
+    {m:"Yer değiştirmek.",ex:"Çocuk yanıma geldi."},
+    {m:"Sonraki sırada bulunmak.",ex:"Listeye göre sıra bana geldi."},
+    {m:"Yetişmek, ermek.",ex:"Hedefine sonunda geldi."}
+  ]
+};
+
+let currentData = [];
+let correct = 0, wrong = 0, wrongItems = [];
+
+function shuffled(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function loadQuiz(word){
+  const quiz=document.getElementById("quiz");
+  quiz.innerHTML="";
+  document.getElementById("retryBox").innerHTML="";
+  correct=0;wrong=0;wrongItems=[];
+  currentData = DATASETS[word];
+  const optionLabels = ['a)', 'b)', 'c)'];
+  currentData.forEach((item,idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="item";
+    const head=document.createElement("div");
+    head.className="qhead";
+    head.textContent=(idx+1)+". "+item.m;
+    head.onclick=()=>choices.style.display=choices.style.display==="block"?"none":"block";
+    const choices=document.createElement("div");
+    choices.className="choices";
+
+    const others=currentData.filter((_,i)=>i!==idx);
+    const picks=shuffled(others).slice(0,2).map(p=>p.ex);
+    const options=shuffled([item.ex,...picks]);
+
+    options.forEach((opt,i)=>{
+    const ch=document.createElement("div");
+    ch.className="choice";
+    ch.textContent=optionLabels[i]+" "+opt;
+    ch.onclick=()=>{
+    if(choices.dataset.locked==="1") return;
+    if(opt===item.ex){
+    ch.classList.add("true");
+    correct++;
+    }else{
+    ch.classList.add("false");
+    wrong++;
+    wrongItems.push(item);
+    setTimeout(()=>{
+    const kids=[...choices.querySelectorAll(".choice")];
+    const correctEl=kids.find(el=>el.textContent.endsWith(item.ex));
+    if(correctEl) correctEl.classList.add("reveal");
+    },500);
+    }
+    choices.dataset.locked="1";
+    updateStats();
+    };
+    choices.appendChild(ch);
+    });
+
+    wrap.appendChild(head);
+    wrap.appendChild(choices);
+    quiz.appendChild(wrap);
+  });
+  updateStats();
+}
+
+function updateStats(){
+  const total=correct+wrong;
+  const perc=total?Math.round(correct*100/total):0;
+  document.getElementById("stats").textContent=`Doğru: ${correct}  Yanlış: ${wrong}  Başarı: %${perc}`;
+  if(total===currentData.length){
+    const retryBox=document.getElementById("retryBox");
+    if(wrongItems.length>0){
+    const btn=document.createElement("button");
+    btn.className="retry";
+    btn.textContent="Yanlışları tekrar çöz";
+    btn.onclick=()=>{
+    currentData=wrongItems;
+    correct=0;wrong=0;wrongItems=[];
+    loadRetry();
+    };
+    retryBox.appendChild(btn);
+    }
+  }
+}
+
+function loadRetry(){
+  const quiz=document.getElementById("quiz");
+  quiz.innerHTML="";
+  document.getElementById("retryBox").innerHTML="";
+  const optionLabels = ['a)', 'b)', 'c)'];
+  currentData.forEach((item,idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="item";
+    const head=document.createElement("div");
+    head.className="qhead";
+    head.textContent=(idx+1)+". "+item.m;
+    head.onclick=()=>choices.style.display=choices.style.display==="block"?"none":"block";
+    const choices=document.createElement("div");
+    choices.className="choices";
+    const others=currentData.filter((_,i)=>i!==idx);
+    const picks=shuffled(others).slice(0,2).map(p=>p.ex);
+    const options=shuffled([item.ex,...picks]);
+    options.forEach((opt,i)=>{
+    const ch=document.createElement("div");
+    ch.className="choice";
+    ch.textContent=optionLabels[i]+" "+opt;
+    ch.onclick=()=>{
+    if(choices.dataset.locked==="1") return;
+    if(opt===item.ex){ch.classList.add("true");correct++;}
+    else{ch.classList.add("false");wrong++;}
+    choices.dataset.locked="1";
+    updateStats();
+    };
+    choices.appendChild(ch);
+    });
+    wrap.appendChild(head);
+    wrap.appendChild(choices);
+    quiz.appendChild(wrap);
+  });
+  updateStats();
+}
+
+document.getElementById("wordSelect").onchange=e=>{
+  if(e.target.value) loadQuiz(e.target.value);
+};
+</script>
+</body>
+</html>
